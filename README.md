@@ -1,2 +1,1 @@
-# react-on-aws
-React App on AWS
+# React App on AWS
