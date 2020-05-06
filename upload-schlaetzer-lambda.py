@@ -5,6 +5,7 @@ import json
 import boto3
 import zipfile
 import io
+import mimetypes
 
 
 def lambda_handler(event, context):
@@ -45,7 +46,8 @@ def lambda_handler(event, context):
         with zipfile.ZipFile(build_zip) as myzip:
             for nm in myzip.namelist():
                 obj = myzip.open(nm)
-                schlaetzer_bucket.upload_fileobj(obj, nm)
+                schlaetzer_bucket.upload_fileobj(obj, nm,
+                  ExtraArgs={'ContentType': mimetypes.guess_type(nm)[0]})
                 schlaetzer_bucket.Object(nm).Acl().put(ACL='public-read')
         
         # tell codepipeline that we have been successful with deploying
